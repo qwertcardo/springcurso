@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.qwertcardo.springcurso.domain.Categoria;
 import com.qwertcardo.springcurso.repositories.CategoriaRepository;
+import com.qwertcardo.springcurso.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class CategoriaService {
@@ -16,6 +17,7 @@ public class CategoriaService {
 	
 	public Categoria buscar(Integer id) {
 		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElse(null);
+		return obj.orElseThrow(() -> new ObjectNotFoundException(
+				"Objeto Não Encontrado Id: " + id + " / Tipo Referenciado: " + Categoria.class.getName()));
 	}
 }
