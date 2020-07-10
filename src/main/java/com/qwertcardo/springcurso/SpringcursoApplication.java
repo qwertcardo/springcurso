@@ -1,5 +1,6 @@
 package com.qwertcardo.springcurso;
 
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +13,20 @@ import com.qwertcardo.springcurso.domain.Cidade;
 import com.qwertcardo.springcurso.domain.Cliente;
 import com.qwertcardo.springcurso.domain.Endereco;
 import com.qwertcardo.springcurso.domain.Estado;
+import com.qwertcardo.springcurso.domain.Pagamento;
+import com.qwertcardo.springcurso.domain.PagamentoComBoleto;
+import com.qwertcardo.springcurso.domain.PagamentoComCartao;
+import com.qwertcardo.springcurso.domain.Pedido;
 import com.qwertcardo.springcurso.domain.Produto;
+import com.qwertcardo.springcurso.domain.enums.EstadoPagamento;
 import com.qwertcardo.springcurso.domain.enums.TipoCliente;
 import com.qwertcardo.springcurso.repositories.CategoriaRepository;
 import com.qwertcardo.springcurso.repositories.CidadeRepository;
 import com.qwertcardo.springcurso.repositories.ClienteRepository;
 import com.qwertcardo.springcurso.repositories.EnderecoRepository;
 import com.qwertcardo.springcurso.repositories.EstadoRepository;
+import com.qwertcardo.springcurso.repositories.PagamentoRepository;
+import com.qwertcardo.springcurso.repositories.PedidoRepository;
 import com.qwertcardo.springcurso.repositories.ProdutoRepository;
 
 @SpringBootApplication
@@ -36,6 +44,10 @@ public class SpringcursoApplication implements CommandLineRunner {
 	private ClienteRepository clienteRepository;
 	@Autowired
 	private EnderecoRepository enderecoRepository;
+	@Autowired
+	private PedidoRepository pedidoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringcursoApplication.class, args);
@@ -43,6 +55,8 @@ public class SpringcursoApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... args) throws Exception {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
 		Categoria cat1 = new Categoria(null, "Informatica");
 		Categoria cat2 = new Categoria(null, "Escritório");
@@ -84,6 +98,20 @@ public class SpringcursoApplication implements CommandLineRunner {
 
 		clienteRepository.saveAll(Arrays.asList(cli1));
 		enderecoRepository.saveAll(Arrays.asList(e1, e2));
+
+		Pedido ped1 = new Pedido(null, sdf.parse("30/09/2017 10:32"), cli1, e1);
+		Pedido ped2 = new Pedido(null, sdf.parse("10/10/2017 19:35"), cli1, e2);
+
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
+		ped1.setPagamento(pagto1);
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"),
+				null);
+		ped2.setPagamento(pagto2);
+
+		cli1.getPedidos().addAll(Arrays.asList(ped1, ped2));
+
+		pedidoRepository.saveAll(Arrays.asList(ped1, ped2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1, pagto2));
 
 	}
 
