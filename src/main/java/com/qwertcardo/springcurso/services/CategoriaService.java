@@ -1,5 +1,6 @@
 package com.qwertcardo.springcurso.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,14 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository repo;
 
-	public Categoria find(Integer id) {
+	public Categoria findId(Integer id) {
 		Optional<Categoria> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Categoria Não Encontrada /Id: " + id + " /Tipo Referenciado: " + Categoria.class.getName()));
+	}
+	
+	public List<Categoria> findAll(){
+		return repo.findAll();
 	}
 
 	public Categoria insert(Categoria categoria) {
@@ -29,12 +34,12 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria categoria) {
-		find(categoria.getId());
+		findId(categoria.getId());
 		return repo.save(categoria);
 	}
 
 	public void delete(Integer id) {
-		find(id);
+		findId(id);
 		try{
 			repo.deleteById(id);
 		}

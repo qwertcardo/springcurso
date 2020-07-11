@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
+import com.qwertcardo.springcurso.DTO.CategoriaDTO;
+
 @Entity
 public class Categoria implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -54,6 +56,10 @@ public class Categoria implements Serializable {
 
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
+	}
+	
+	public CategoriaDTO toDTO() {
+		return new CategoriaDTO(id, nome);
 	}
 
 	@Override
