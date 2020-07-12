@@ -48,9 +48,7 @@ public class CategoriaResource {
 			@RequestParam(value = "orderBy", defaultValue = "nome") String orderBy, 
 			@RequestParam(value = "direction", defaultValue = "ASC") String direction){
 		Page<Categoria> pageCategoria = service.findPage(page, linesPerPage, orderBy, direction);
-		return ResponseEntity.ok().body(pageCategoria.map(x -> service.toDTO(x)));
-				
-		
+		return ResponseEntity.ok().body(pageCategoria.map(x -> service.toDTO(x)));	
 	}
 
 	@RequestMapping(method = RequestMethod.POST)

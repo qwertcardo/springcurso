@@ -43,8 +43,13 @@ public class CategoriaService {
 	}
 
 	public Categoria update(Categoria categoria) {
-		findId(categoria.getId());
+		Categoria categoriaToUpdate = findId(categoria.getId());
+		updateData(categoriaToUpdate, categoria);
 		return repo.save(categoria);
+	}
+	
+	private void updateData(Categoria categoriaToUpdate, Categoria categoria) {
+		categoriaToUpdate.setNome(categoria.getNome());
 	}
 
 	public void delete(Integer id) {
@@ -54,8 +59,8 @@ public class CategoriaService {
 		}
 		catch(DataIntegrityViolationException error) {
 			throw new DataIntegrityException(
-					"Não é possivel deletar uma Categoria que possui Produto(s) associado"
-					+ " /Tipo: " + Categoria.class.getName());
+					"Não é possivel deletar uma Categoria que possui Produto(s) associado "
+					+ "/Tipo: " + Categoria.class.getName());
 		}
 	}
 	
