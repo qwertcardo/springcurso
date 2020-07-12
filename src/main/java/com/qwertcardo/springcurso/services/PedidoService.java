@@ -20,4 +20,6 @@ public class PedidoService {
 		return pedido.orElseThrow(() -> new ObjectNotFoundException(
 				"Pedido Não Encontrado /Id: " + id + " /Tipo Referenciado: " + Pedido.class.getName()));
 	}
+	
+	
 }
