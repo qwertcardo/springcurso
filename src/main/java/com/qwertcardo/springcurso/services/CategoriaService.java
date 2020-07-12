@@ -10,6 +10,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
+import com.qwertcardo.springcurso.DTO.CategoriaDTO;
 import com.qwertcardo.springcurso.domain.Categoria;
 import com.qwertcardo.springcurso.repositories.CategoriaRepository;
 import com.qwertcardo.springcurso.services.exceptions.DataIntegrityException;
@@ -56,5 +57,13 @@ public class CategoriaService {
 					"Não é possivel deletar uma Categoria que possui Produto(s) associado"
 					+ " /Tipo: " + Categoria.class.getName());
 		}
+	}
+	
+	public CategoriaDTO toDTO(Categoria categoria) {
+		return new CategoriaDTO(categoria.getId(), categoria.getNome());
+	}
+	
+	public Categoria fromDTO(CategoriaDTO categoriaDTO) {
+		return new Categoria(categoriaDTO.getId(), categoriaDTO.getNome());
 	}
 }
